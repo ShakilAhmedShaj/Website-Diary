@@ -1,15 +1,19 @@
 <?php
 
-$con = mysqli_connect("localhost","root","210696") OR die("cannot connect");
-mysqli_select_db($con,'wd');
+/*
+    mysqli_connect not configured proparly.
+*/
+$con = mysqli_connect("localhost","root","210696", "wd") OR die("cannot connect");
 
+// mysqli_select_db($con,'wd'); use select_db if you want to change your database, Learn more about select_db https://php.net/manual/en/mysqli.select-db.php
 
 if ($con->connect_errno) {
     echo("Failed to connect to database");
     exit();
 }
 
-$siteName = $_GET["myCountry"];
+// SQLi fixed by using mysqli_real_escape_string($connection, $query);
+$siteName = mysqli_real_escape_string($con, $_GET["myCountry"]);
 
 $result = $con->query("SELECT * FROM `site_info2` WHERE site_info2.name = '$siteName'");
 
